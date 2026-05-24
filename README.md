@@ -1,8 +1,26 @@
 # Validador de Tokens - DFA
 
-Validador de tokens usando **Autômato Finito Determinístico (DFA)** implementado em C.
+Implementação de **Autômatos Finitos Determinísticos (DFA)** em C para validar diferentes padrões.
 
-## Padrão
+## Estrutura do Projeto
+
+```
+DFA-token_validator/
+├── README.md              # Este arquivo
+├── src/
+│   ├── main.c             # Validador de tokens com formato ^_[a-z]+[a-z0-9]*$
+│   ├── DFA_form_mod.c     # Validador de números inteiros positivos
+│   └── output/            # Executáveis compilados
+├── docs/                  # Documentação adicional
+├── build/                 # Arquivos de compilação
+└── output/                # Saída do programa
+```
+
+## Validadores Implementados
+
+### 1. main.c - Validador de Tokens
+
+Valida tokens com o seguinte padrão:
 
 ```
 ^_[a-z]+[a-z0-9]*$
@@ -13,14 +31,34 @@ Tokens devem começar com `_`, seguidos de letras minúsculas e opcionalmente d�
 **Exemplos válidos:** `_token`, `_token42`, `_x`  
 **Exemplos inválidos:** `token`, `_123`, `_Token`
 
-## Uso Rápido
+**Estados do DFA:**
+- Estado 0: Inicial - aguardando `_`
+- Estado 1: Após `_` - aguardando pelo menos uma letra minúscula
+- Estado 2: Aceitação - permite letras minúsculas e dígitos
+
+### 2. DFA_form_mod.c - Validador de Números Inteiros Positivos
+
+Valida números inteiros positivos (sem sinal negativo ou casas decimais).
+
+**Padrão:** `^[0-9]+$`
+
+**Exemplos válidos:** `0`, `1`, `123`, `456789`  
+**Exemplos inválidos:** `-1`, `1.5`, `.5`, `5.`, `abc`, `12a`
+
+**Estados do DFA:**
+- Estado 0: Inicial - aguardando primeiro dígito
+- Estado 1: Aceitação - permite dígitos consecutivos
+
+## Compilação e Execução
 
 ```bash
-# Compilar
-gcc -o output/main src/main.c
+# Compilar validador de tokens
+gcc -Wall -Wextra -o src/output/main src/main.c
+./src/output/main
 
-# Executar
-./output/main
+# Compilar validador de números inteiros
+gcc -Wall -Wextra -o src/output/DFA_form_mod src/DFA_form_mod.c
+./src/output/DFA_form_mod
 ```
 
 ## Diagrama de Fluxo
